@@ -19,7 +19,7 @@ ERROR;
 
 $filename = $argv[1];
 if (!is_readable($filename)) {
-	println("$filename could not be read", STDERR);
+	println("ERROR: $filename could not be read", STDERR);
 	exit(1);
 }
 
