@@ -25,36 +25,7 @@ if (!is_readable($filename)) {
 
 $input = file_get_contents($filename);
 $words = explode ( $delimiter = ' ', $input );
-$sentenceIndex = 1;
-
-$concordance = [ ];
-foreach ( $words as $word ) {
-	$word = trim($word);
-	if (empty($word)) {
-		continue;
-	}
-	
-	$is_abbreviation = is_abbreviation($word);
-	$is_end_of_sentence = ends_with($word, $needle = '.') && !$is_abbreviation;
-	if (!$is_abbreviation) {
-		$word = remove_punctuation($word);
-	}
-	
-	$word = strtolower($word);
-	if (isset($concordance[$word])) {
-		$entry = $concordance[$word];
-		$entry->incrementOccurrences();
-		$entry->addSentenceIndex($sentenceIndex);
-	} else {
-		$concordance[$word] = new Word ( $word, $sentenceIndex );
-	}
-	
-	if ($is_end_of_sentence) {
-		$sentenceIndex++;
-	}
-}
-ksort($concordance);
-
+$concordance = generage_concordance($words);
 foreach ($concordance as $entry) {
 	println($entry);
 	println();
@@ -62,10 +33,12 @@ foreach ($concordance as $entry) {
 
 /*
  * CLASSES AND FUNCTIONS
+ * 
+ * Normally I would break these out into separate files, e.g. using PSR-4 and write unit tests.
  */
 
 /**
- * 
+ *
  * @param string $string
  * @param resource $stream
  */
@@ -75,6 +48,48 @@ function println($string = '', $stream = STDOUT) {
 		$stream = fopen('php://output', $mode = 'w');
 	}
 	fwrite ( $stream , $string );
+}
+
+function generage_concordance(array $words) {
+	$concordance = [];
+	$sentenceIndex = 1;
+	foreach ( $words as $word ) {
+		$word = trim($word);
+		if (empty($word)) {
+			continue;
+		}
+	
+		$is_abbreviation = is_abbreviation($word);
+		$is_end_of_sentence = ends_with($word, $needle = '.') && !$is_abbreviation;
+		if (!$is_abbreviation) {
+			$word = remove_punctuation($word);
+		}
+	
+		$word = strtolower($word);
+		if (isset($concordance[$word])) {
+			$entry = $concordance[$word];
+			$entry->incrementOccurrences();
+			$entry->addSentenceIndex($sentenceIndex);
+		} else {
+			$concordance[$word] = new Word ( $word, $sentenceIndex );
+		}
+	
+		if ($is_end_of_sentence) {
+			$sentenceIndex++;
+		}
+	}
+	ksort($concordance);
+	return $concordance;
+}
+
+/**
+ *
+ * @param string $word
+ * @return boolean
+ */
+function is_abbreviation($word) {
+	$pattern = '/^(\w\.){2,}$/';
+	return preg_match ( $pattern, $word ) === 1;
 }
 
 /**
@@ -91,16 +106,6 @@ function ends_with($haystack, $needle) {
 	}
 	
 	return (substr ( $haystack, - $length ) === $needle);
-}
-
-/**
- * 
- * @param string $word
- * @return boolean
- */
-function is_abbreviation($word) {
-	$pattern = '/^(\w\.){2,}$/';
-	return preg_match ( $pattern, $word ) === 1;
 }
 
 /**
