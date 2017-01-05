@@ -50,9 +50,9 @@ function println($string = '', $stream = STDOUT) {
 }
 
 function generate_concordance($text) {
-	$words = explode ( $delimiter = ' ', $text );
 	$concordance = [];
 	$sentenceIndex = 1;
+	$words = explode ( $delimiter = ' ', $text );
 	foreach ( $words as $word ) {
 		$word = trim($word);
 		if (empty($word)) {
