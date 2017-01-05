@@ -24,8 +24,7 @@ if (!is_readable($filename)) {
 }
 
 $input = file_get_contents($filename);
-$words = explode ( $delimiter = ' ', $input );
-$concordance = generate_concordance($words);
+$concordance = generate_concordance($input);
 foreach ($concordance as $entry) {
 	println($entry);
 	println();
@@ -50,7 +49,8 @@ function println($string = '', $stream = STDOUT) {
 	fwrite ( $stream , $string );
 }
 
-function generate_concordance(array $words) {
+function generate_concordance($text) {
+	$words = explode ( $delimiter = ' ', $text );
 	$concordance = [];
 	$sentenceIndex = 1;
 	foreach ( $words as $word ) {
