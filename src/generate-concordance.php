@@ -71,7 +71,7 @@ function generate_concordance(array $words) {
 			$entry->incrementOccurrences();
 			$entry->addSentenceIndex($sentenceIndex);
 		} else {
-			$concordance[$word] = new Word ( $word, $sentenceIndex );
+			$concordance[$word] = new WordEntry ( $word, $sentenceIndex );
 		}
 	
 		if ($is_end_of_sentence) {
@@ -118,7 +118,7 @@ function remove_punctuation($word) {
 	return preg_replace($pattern, $replacement = '', $word);
 }
 
-class Word {
+class WordEntry {
 
 	private $word;
 	private $occurrences;
