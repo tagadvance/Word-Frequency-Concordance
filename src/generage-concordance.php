@@ -107,7 +107,7 @@ function ends_with($haystack, $needle) {
  * @return boolean
  */
 function is_abbreviation($word) {
-	$pattern = '/^(\w\.)+$/';
+	$pattern = '/^(\w\.){2,}$/';
 	return preg_match ( $pattern, $word ) === 1;
 }
 
