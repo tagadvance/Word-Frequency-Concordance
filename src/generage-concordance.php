@@ -60,14 +60,6 @@ foreach ($concordance as $entry) {
 	println();
 }
 
-
-
-
-
-
-
-
-
 /*
  * CLASSES AND FUNCTIONS
  */
