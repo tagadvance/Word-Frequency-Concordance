@@ -1,10 +1,6 @@
 #!/usr/bin/php
 <?php
 
-/**
- * @author Taggart Spilman <tagspilman@gmail.com>
- */
-
 define('EXPECTED_ARGUMENTS', 2);
 
 if ($argc < EXPECTED_ARGUMENTS) {
