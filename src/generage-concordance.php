@@ -68,8 +68,15 @@ foreach ($concordance as $entry) {
 
 
 
+/*
+ * CLASSES AND FUNCTIONS
+ */
 
-
+/**
+ * 
+ * @param string $string
+ * @param resource $stream
+ */
 function println($string = '', $stream = STDOUT) {
 	$string .= PHP_EOL;
 	if ($stream === null) {
@@ -79,7 +86,10 @@ function println($string = '', $stream = STDOUT) {
 }
 
 /**
- *
+ * 
+ * @param string $haystack
+ * @param string $needle
+ * @return boolean
  * @see http://stackoverflow.com/a/834355/625688
  */
 function ends_with($haystack, $needle) {
@@ -91,11 +101,21 @@ function ends_with($haystack, $needle) {
 	return (substr ( $haystack, - $length ) === $needle);
 }
 
+/**
+ * 
+ * @param string $word
+ * @return boolean
+ */
 function is_abbreviation($word) {
 	$pattern = '/^(\w\.)+$/';
 	return preg_match ( $pattern, $word ) === 1;
 }
 
+/**
+ * 
+ * @param string $word
+ * @return string
+ */
 function remove_punctuation($word) {
 	$pattern = '/[^\w\d]+$/';
 	return preg_replace($pattern, $replacement = '', $word);
@@ -107,6 +127,12 @@ class Word {
 	private $occurrences;
 	private $sentenceIndexes = [];
 
+	/**
+	 * 
+	 * @param string $word
+	 * @param int $sentenceIndex
+	 * @param int $occurrences
+	 */
 	public function __construct($word, $sentenceIndex, $occurrences = 1) {
 		$this->word = $word;
 		$this->sentenceIndexes[] = $sentenceIndex;
@@ -117,6 +143,10 @@ class Word {
 		$this->occurrences++;
 	}
 
+	/**
+	 * 
+	 * @param int $sentenceIndex
+	 */
 	public function addSentenceIndex($sentenceIndex) {
 		$this->sentenceIndexes[] = $sentenceIndex;
 	}
