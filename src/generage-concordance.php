@@ -17,7 +17,13 @@ ERROR;
 	exit(1);
 }
 
-$input = file_get_contents($argv[1]);
+$filename = $argv[1];
+if (!is_readable($filename)) {
+	println("$filename could not be read", STDERR);
+	exit(1);
+}
+
+$input = file_get_contents($filename);
 $words = explode ( $delimiter = ' ', $input );
 $sentenceIndex = 1;
 
